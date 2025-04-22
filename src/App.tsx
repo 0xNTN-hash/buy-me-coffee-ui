@@ -6,6 +6,7 @@ import {
   BrowserProvider,
   ethers,
   formatEther,
+  getAddress,
   JsonRpcSigner,
   parseEther,
 } from "ethers";
@@ -16,11 +17,12 @@ function App() {
 
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState<string>();
   const [provider, setProvider] = useState<BrowserProvider>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
   const [contract, setContract] = useState<BuyMeCoffeeAbi>();
 
+  const [owner, setOwner] = useState("");
   const [contractBalance, setContractBalance] = useState("");
   const [events, setEvents] = useState<NewMemoEvent.OutputTuple[]>();
 
@@ -60,10 +62,13 @@ function App() {
       const { ethereum } = window;
 
       if (ethereum) {
-        const accounts = await ethereum.request({ method: "eth_accounts" });
+        const accounts: string[] = await ethereum.request({
+          method: "eth_accounts",
+        });
         if (accounts.length > 0) {
           setIsWalletConnected(true);
-          setAccount(accounts[0]);
+          const address = getAddress(accounts[0]);
+          setAccount(address);
           // setContract(new Contract(contractAddress, contractABI, signer));
         } else {
           setIsWalletConnected(false);
@@ -110,6 +115,25 @@ function App() {
     setEvents([...evArr]);
   };
 
+  const getOwner = async () => {
+    const result = await contract?.getOwner();
+
+    if (result) {
+      setOwner(getAddress(result));
+    }
+  };
+
+  const withdraw = async (event: any) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const amount = formData.get("amount")!.toString();
+
+    if (amount && parseFloat(amount.toString()) > 0) {
+      const coffeeTxn = await contract?.withdrawTips(parseEther(amount));
+      console.log(coffeeTxn);
+    }
+  };
+
   useEffect(() => {
     connectWallet();
     checkIsWalletConnected();
@@ -130,6 +154,9 @@ function App() {
         <button onClick={connectWallet}>{`${
           isWalletConnected ? account : "Connect Wallet"
         }`}</button>
+        <button onClick={getOwner}>{`${
+          owner === account ? "Owner" : "Guest"
+        }`}</button>
         <button onClick={getBalance}>{contractBalance} ETH</button>
       </div>
 
@@ -149,6 +176,23 @@ function App() {
           }`}</button>
         </form>
       </div>
+
+      {owner === account && (
+        <div className="form_wrapper">
+          <form onSubmit={withdraw}>
+            <input
+              type="number"
+              placeholder="Amount to withdraw"
+              name="amount"
+              step="0.00000001"
+              required
+            />
+            <button type="submit" disabled={!isWalletConnected}>{`${
+              isWalletConnected ? "Withdraw" : "Connect Wallet"
+            }`}</button>
+          </form>
+        </div>
+      )}
 
       <button onClick={getEvents}>Get Events</button>
       <div className="events">
