@@ -1,25 +1,40 @@
 .App {
-  background-color: #282c34;
+  background-color: #010624;
   color: #ffffff;
   font-family: "Courier New", Courier, monospace;
+  font-size: medium;
   width: 100vw;
-  height: 100%;
-}
-
-.header {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.form_wrapper {
+  height: 100vh;
+  background-image: url("./assets/images/background.jpg");
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  border: 1px solid #ffffff;
-  border-radius: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  width: 40%;
+  max-width: 600px;
+  border-radius: 20px;
   padding: 25px;
   margin: 50px auto;
+  background-color: #250253;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+}
+.subtitle {
+  font-size: 18px;
+  font-weight: normal;
 }

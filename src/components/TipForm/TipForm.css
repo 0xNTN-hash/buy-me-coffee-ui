@@ -1,0 +1,91 @@
+.form_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #340374;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 50px auto;
+}
+
+.form_wrapper * {
+  width: 100%;
+}
+
+input,
+textarea {
+  background: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #696097;
+  margin-bottom: 20px;
+  font-size: 16px;
+  padding-bottom: 5px;
+  color: #696097;
+  font-weight: 600;
+}
+
+textarea {
+  resize: none;
+}
+
+::placeholder {
+  color: #696097;
+  font-weight: 600;
+  text-align: left;
+}
+
+.amount_wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.amount_wrapper input {
+  text-align: right;
+  margin-right: 10px;
+}
+
+.currency {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  flex: 1;
+}
+
+.tip-button {
+  background-color: #250253;
+  color: #ad1cf7;
+  border: 1px solid #ad1cf7;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.tip-button:hover:not-disabled {
+  background-color: #ad1cf7;
+  color: #ffffff;
+}
+
+.tip-button:focus {
+  outline: none;
+}
+.tip-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hide arrows in Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

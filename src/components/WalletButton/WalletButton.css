@@ -1,0 +1,31 @@
+.wallet_connect_button {
+  background-color: #250253;
+  color: #ad1cf7;
+  border: 1px solid #ad1cf7;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.wallet_connect_button:hover {
+  background-color: #ad1cf7;
+  color: #ffffff;
+}
+.wallet_connect_button:focus {
+  outline: none;
+}
+.wallet_connect_button:active {
+  background-color: #9b0fdb;
+  color: #ffffff;
+}
+.wallet_connect_button:disabled {
+  background-color: #250253;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+.wallet_connect_button:disabled:hover {
+  background-color: #250253;
+  color: #ffffff;
+}

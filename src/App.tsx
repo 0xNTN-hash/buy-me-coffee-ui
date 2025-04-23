@@ -10,6 +10,8 @@ import {
   JsonRpcSigner,
   parseEther,
 } from "ethers";
+import WalletButton from "./components/WalletButton/WalletButton";
+import TipForm from "./components/TipForm/TipForm";
 
 function App() {
   const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
@@ -39,15 +41,29 @@ function App() {
 
         setContract(contr);
 
-        contr?.on(contr?.filters.NewMemo, (from, timestamp, name, message) => {
-          setEvents((prev) => {
-            if (prev === undefined) {
-              prev = [];
-            }
-
-            return [...prev, [from, timestamp, name, message]];
-          });
+        const accounts: string[] = await ethereum.request({
+          method: "eth_accounts",
         });
+        const network = await prov.getNetwork();
+        console.log("Network", network);
+        if (accounts.length > 0) {
+          setIsWalletConnected(true);
+          const address = getAddress(accounts[0]);
+          setAccount(address);
+          // setContract(new Contract(contractAddress, contractABI, signer));
+        } else {
+          setIsWalletConnected(false);
+        }
+
+        // contr?.on(contr?.filters.NewMemo, (from, timestamp, name, message) => {
+        //   setEvents((prev) => {
+        //     if (prev === undefined) {
+        //       prev = [];
+        //     }
+
+        //     return [...prev, [from, timestamp, name, message]];
+        //   });
+        // });
       } else {
         console.log("MetaMask not installed; using read-only defaults");
         // setProvider(ethers.getDefaultProvider());
@@ -135,7 +151,6 @@ function App() {
   };
 
   useEffect(() => {
-    connectWallet();
     checkIsWalletConnected();
   }, []);
 
@@ -150,69 +165,67 @@ function App() {
 
   return (
     <div className="App">
-      <div className="header">
-        <button onClick={connectWallet}>{`${
-          isWalletConnected ? account : "Connect Wallet"
-        }`}</button>
-        <button onClick={getOwner}>{`${
-          owner === account ? "Owner" : "Guest"
-        }`}</button>
-        <button onClick={getBalance}>{contractBalance} ETH</button>
-      </div>
-
-      <div className="form_wrapper">
-        <form onSubmit={sendTip}>
-          <input type="string" placeholder="Name" name="name" required />
-          <input
-            type="number"
-            placeholder="Amount you want to tip"
-            name="amount"
-            step="0.00000001"
-            required
+      <div className="card">
+        <div className="header">
+          <p>Logo</p>
+          <WalletButton
+            isWalletConnected={isWalletConnected}
+            account={account}
+            connectWallet={connectWallet}
           />
-          <textarea name="memo" placeholder="Say something" required />
-          <button type="submit" disabled={!isWalletConnected}>{`${
-            isWalletConnected ? "TIP" : "Connect Wallet"
-          }`}</button>
-        </form>
-      </div>
-
-      {owner === account && (
-        <div className="form_wrapper">
-          <form onSubmit={withdraw}>
-            <input
-              type="number"
-              placeholder="Amount to withdraw"
-              name="amount"
-              step="0.00000001"
-              required
-            />
-            <button type="submit" disabled={!isWalletConnected}>{`${
-              isWalletConnected ? "Withdraw" : "Connect Wallet"
-            }`}</button>
-          </form>
+          {/* <button onClick={getOwner}>{`${
+            owner === account ? "Owner" : "Guest"
+          }`}</button> */}
+          {/* <button onClick={getBalance}>{contractBalance} ETH</button> */}
         </div>
-      )}
 
-      <button onClick={getEvents}>Get Events</button>
-      <div className="events">
-        {events?.map((event, index) => (
-          <div key={index} className="event">
-            <p>
-              <strong>From:</strong> {event}
-            </p>
-            <p>
-              <strong>Timestamp:</strong>{" "}
-              {new Date(Number(event[1]) * 1000).toLocaleString()}
-            </p>
-            <p>
-              <strong>Name:</strong> {event[2]}
-            </p>
-            <p>
-              <strong>Message:</strong> {event[3]}
-            </p>
+        <div>
+          <h1 className="title">Buy Me A Coffee</h1>
+          <p className="subtitle">
+            If you like my work, you can buy me a coffee. I would really
+            appreciate it!
+          </p>
+        </div>
+
+        <TipForm isWalletConnected={isWalletConnected} sendTip={sendTip} />
+
+        {/* {owner === account && (
+          <div className="form_wrapper">
+            <form onSubmit={withdraw}>
+              <input
+                type="number"
+                placeholder="Amount to withdraw"
+                name="amount"
+                step="0.00000001"
+                required
+              />
+              <button type="submit" disabled={!isWalletConnected}>{`${
+                isWalletConnected ? "Withdraw" : "Connect Wallet"
+              }`}</button>
+            </form>
           </div>
-        ))}
+        )} */}
+
+        {/* <button onClick={getEvents}>Get Events</button> */}
+        {/* <div className="events">
+          {events?.map((event, index) => (
+            <div key={index} className="event">
+              <p>
+                <strong>From:</strong> {event}
+              </p>
+              <p>
+                <strong>Timestamp:</strong>{" "}
+                {new Date(Number(event[1]) * 1000).toLocaleString()}
+              </p>
+              <p>
+                <strong>Name:</strong> {event[2]}
+              </p>
+              <p>
+                <strong>Message:</strong> {event[3]}
+              </p>
+            </div>
+          ))}
+        </div> */}
       </div>
     </div>
   );
