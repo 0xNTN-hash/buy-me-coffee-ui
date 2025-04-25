@@ -6,7 +6,7 @@
   background-color: #340374;
   border-radius: 10px;
   padding: 25px;
-  margin: 50px auto;
+  margin: 50px auto 0;
 }
 
 .form_wrapper * {
@@ -28,6 +28,15 @@ textarea {
 
 textarea {
   resize: none;
+}
+
+input:-internal-autofill-selected {
+  background-color: #250253 !important;
+  color: #696097 !important;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #340374 inset !important;
+  -webkit-text-fill-color: #696097 !important;
 }
 
 ::placeholder {
@@ -54,6 +63,9 @@ textarea {
 }
 
 .tip-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #250253;
   color: #ad1cf7;
   border: 1px solid #ad1cf7;
@@ -63,9 +75,10 @@ textarea {
   font-size: 14px;
   font-weight: 600;
   width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-.tip-button:hover:not-disabled {
+.tip-button:hover:not(:disabled) {
   background-color: #ad1cf7;
   color: #ffffff;
 }
