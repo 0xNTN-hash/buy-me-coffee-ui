@@ -9,12 +9,10 @@
   margin: 50px auto 0;
 }
 
-.form_wrapper * {
-  width: 100%;
-}
 
 input,
 textarea {
+  width: 100%;
   background: none;
   outline: none;
   border: none;
@@ -48,6 +46,7 @@ input:-webkit-autofill {
 .amount_wrapper {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .amount_wrapper input {

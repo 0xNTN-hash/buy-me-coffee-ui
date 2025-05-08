@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./WalletButton.css";
+import Loader from "../Loader/Loader";
 
 type WalletButtonProps = {
   isWalletConnected: boolean;
@@ -31,7 +32,7 @@ const WalletButton = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {isLoading ? (
-        <div className="loader"></div>
+        <Loader />
       ) : isWalletConnected && isHovered ? (
         "Disconnect"
       ) : (
